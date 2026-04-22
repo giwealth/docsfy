@@ -159,6 +159,9 @@ func (s *state) handleSearchIndex(w http.ResponseWriter, _ *http.Request) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Cache-Control", "no-store, max-age=0")
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("Expires", "0")
 	if err := json.NewEncoder(w).Encode(s.index); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

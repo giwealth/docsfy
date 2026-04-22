@@ -5,7 +5,6 @@
   let ready = false;
   let loading = false;
   let lastMatches = [];
-  const CACHE_KEY = "docsfy_search_index_v1";
   let es = null;
   let lastReloadAt = 0;
 
@@ -13,18 +12,10 @@
     if (ready || loading) return ready;
     loading = true;
     try {
-      const cached = window.sessionStorage.getItem(CACHE_KEY);
-      if (cached) {
-        index = JSON.parse(cached);
-        ready = true;
-        return true;
-      }
-
-      const res = await fetch("/search-index.json");
+      const res = await fetch("/search-index.json", { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       index = await res.json();
       ready = true;
-      window.sessionStorage.setItem(CACHE_KEY, JSON.stringify(index));
       return true;
     } catch (e) {
       console.warn("load search index failed:", e);
