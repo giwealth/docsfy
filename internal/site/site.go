@@ -169,11 +169,30 @@ func docToNav(d content.Document) NavItem {
 		Title: title,
 		Route: d.RoutePath,
 	}
-	for _, sec := range d.Sections {
-		item.Children = append(item.Children, NavItem{
-			Title: sec.Title,
-			Route: d.RoutePath + "#" + sec.Anchor,
-		})
-	}
+	item.Children = buildSectionNav(d.RoutePath, d.Sections)
 	return item
+}
+
+func buildSectionNav(baseRoute string, sections []content.Section) []NavItem {
+	out := make([]NavItem, 0)
+	lastH2 := -1
+	for _, sec := range sections {
+		n := NavItem{
+			Title: sec.Title,
+			Route: baseRoute + "#" + sec.Anchor,
+		}
+		switch sec.Level {
+		case 2:
+			out = append(out, n)
+			lastH2 = len(out) - 1
+		case 3:
+			if lastH2 >= 0 {
+				out[lastH2].Children = append(out[lastH2].Children, n)
+			} else {
+				// Fallback: when there is no preceding h2, keep h3 visible.
+				out = append(out, n)
+			}
+		}
+	}
+	return out
 }

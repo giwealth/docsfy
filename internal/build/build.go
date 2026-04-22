@@ -38,6 +38,7 @@ func Run(cfg config.Config) error {
 			docs[i].Sections = append(docs[i].Sections, content.Section{
 				Title:  sec.Title,
 				Anchor: sec.Anchor,
+				Level:  sec.Level,
 			})
 		}
 		embedded, err := kroki.Embed(ctx, docs[i].HTML, cfg.KrokiURL, cfg.KrokiDisabled, cfg.FrontendMermaid, httpClient)

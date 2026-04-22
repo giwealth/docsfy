@@ -32,7 +32,7 @@
       </div>
     </div>
   </header>
-  <main class="grid min-h-[calc(100vh-4rem)] w-full grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
+  <main class="grid min-h-[calc(100vh-4rem)] w-full grid-cols-1 lg:grid-cols-[350px_minmax(0,1fr)]">
     <aside class="border-b border-slate-200 bg-white px-2 py-4 scroll-pt-3 scroll-pb-3 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:overflow-y-auto lg:border-b-0 lg:border-r">
       <nav class="space-y-1">
         {{range $i, $item := .Nav}}
@@ -64,7 +64,14 @@
                     </a>
                     <div id="nav-sub-group-{{$i}}-{{$j}}" class="nav-sub-accordion-panel ml-3 {{if not (isActivePrefix $.Current $child.Route)}}hidden {{end}}space-y-1 border-l border-slate-200 pl-2">
                       {{range $child.Children}}
-                        <a data-inactive-color="text-slate-500" class="nav-link block rounded-md px-2 py-1 text-xs text-slate-500 transition hover:bg-slate-100" href="{{.Route}}">{{.Title}}</a>
+                        <a data-inactive-color="text-slate-500" class="nav-link block truncate rounded-md px-2 py-1 text-sm text-slate-500 transition hover:bg-slate-100" href="{{.Route}}" title="{{.Title}}">{{.Title}}</a>
+                        {{if .Children}}
+                          <div class="ml-3 space-y-1 border-l border-slate-200 pl-2">
+                            {{range .Children}}
+                              <a data-inactive-color="text-slate-500" class="nav-link block truncate rounded-md px-2 py-1 text-sm text-slate-500 transition hover:bg-slate-100" href="{{.Route}}" title="{{.Title}}">{{.Title}}</a>
+                            {{end}}
+                          </div>
+                        {{end}}
                       {{end}}
                     </div>
                   </div>

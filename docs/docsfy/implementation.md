@@ -161,14 +161,14 @@ type SearchItem struct {
 
 ## 6. 增量构建与热更新方案
 
-## 6.1 监听策略
+### 6.1 监听策略
 
 - 使用文件监听库（如 `fsnotify`）监听以下目录：
   - `docs/`
   - `web/templates/`
   - `web/assets/`
 
-## 6.2 变更处理策略
+### 6.2 变更处理策略
 
 - **Markdown 变更**：
   - 重新解析该文件
@@ -182,7 +182,7 @@ type SearchItem struct {
   - 直接重新提供新资源内容
   - 向浏览器发送刷新通知
 
-## 6.3 前端热更新机制（简化版）
+### 6.3 前端热更新机制（简化版）
 
 - 页面注入一个轻量脚本，连接 `/__livereload`（SSE）。
 - 服务端在构建更新后向 SSE 客户端推送 `reload` 事件。
@@ -190,7 +190,7 @@ type SearchItem struct {
 
 ## 7. 全文搜索实现方案
 
-## 7.1 构建阶段
+### 7.1 构建阶段
 
 - 从每个文档提取：
   - 第一标题作为 `title`（若无则使用文件名）
@@ -198,7 +198,7 @@ type SearchItem struct {
   - 正文纯文本 `content`（可截断到固定长度）
 - 写入 `dist/search-index.json`
 
-## 7.2 前端检索阶段
+### 7.2 前端检索阶段
 
 - 页面加载后按需请求 `/search-index.json`。
 - 前端执行简单匹配（`includes`/分词匹配，先做 MVP）。

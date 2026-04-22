@@ -5,7 +5,6 @@
   const subAccordionLinks = Array.from(
     document.querySelectorAll("[data-sub-accordion-link]")
   );
-  let skipRefreshOnce = false;
 
   /**
    * 在侧栏内滚动，保证菜单标题行可见。
@@ -118,18 +117,8 @@
       if (!targetId || !parentId) return;
       const panel = document.getElementById(targetId);
       if (!panel) return;
-      const isExpanded = !panel.classList.contains("hidden");
-
-      // First click expands grouped submenu; second click navigates normally.
-      if (isExpanded) {
-        return;
-      }
-
       const icon = link.querySelector(".nav-sub-accordion-icon");
       if (!parentId) return;
-
-      evt.preventDefault();
-      skipRefreshOnce = true;
       link.setAttribute("aria-expanded", "true");
       if (icon) {
         icon.textContent = "▴";
@@ -280,9 +269,6 @@
     const clickedLink = target.closest(".nav-link");
     if (clickedLink) {
       setImmediateActiveWithinLevel(clickedLink);
-      if (skipRefreshOnce) {
-        skipRefreshOnce = false;
-      }
     }
   });
 })();

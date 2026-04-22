@@ -4,6 +4,7 @@ import (
 	"bytes"
 	stdhtml "html"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/yuin/goldmark"
@@ -26,6 +27,7 @@ type Result struct {
 type Section struct {
 	Title  string
 	Anchor string
+	Level  int
 }
 
 func MarkdownToHTML(markdown string) (Result, error) {
@@ -82,12 +84,17 @@ func extractSections(htmlStr string) []Section {
 		anchor := strings.TrimSpace(m[2])
 		title := strings.TrimSpace(htmlTagRE.ReplaceAllString(m[3], ""))
 		title = stdhtml.UnescapeString(title)
+		level, err := strconv.Atoi(m[1])
+		if err != nil {
+			continue
+		}
 		if anchor == "" || title == "" {
 			continue
 		}
 		sections = append(sections, Section{
 			Title:  title,
 			Anchor: anchor,
+			Level:  level,
 		})
 	}
 	return sections

@@ -24,6 +24,7 @@ type Document struct {
 type Section struct {
 	Title  string
 	Anchor string
+	Level  int
 }
 
 func Scan(docsDir string) ([]Document, error) {

@@ -74,6 +74,7 @@ func (s *state) rebuildAll() error {
 			docs[i].Sections = append(docs[i].Sections, content.Section{
 				Title:  sec.Title,
 				Anchor: sec.Anchor,
+				Level:  sec.Level,
 			})
 		}
 		embedded, err := kroki.Embed(ctx, docs[i].HTML, s.cfg.KrokiURL, s.cfg.KrokiDisabled, s.cfg.FrontendMermaid, s.httpClient)
