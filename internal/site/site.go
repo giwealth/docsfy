@@ -24,7 +24,17 @@ type PageData struct {
 }
 
 func ParseTemplates(templatesDir string) (*template.Template, error) {
-	return template.ParseGlob(filepath.Join(templatesDir, "*.tmpl"))
+	funcMap := template.FuncMap{
+		"isActivePrefix": isActivePrefix,
+	}
+	return template.New("").Funcs(funcMap).ParseGlob(filepath.Join(templatesDir, "*.tmpl"))
+}
+
+func isActivePrefix(current, route string) bool {
+	if route == "/" {
+		return current == "/"
+	}
+	return strings.HasPrefix(current, route)
 }
 
 func BuildNav(docs []content.Document) []NavItem {

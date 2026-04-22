@@ -41,12 +41,12 @@
               type="button"
               class="nav-accordion-toggle flex w-full items-center justify-between rounded-md px-2 py-2 text-left text-sm text-slate-700 transition hover:bg-slate-100"
               data-accordion-target="nav-group-{{$i}}"
-              aria-expanded="false"
+              aria-expanded="{{if isActivePrefix $.Current $item.Route}}true{{else}}false{{end}}"
             >
               <span>{{$item.Title}}</span>
-              <span class="text-xs text-slate-400">▾</span>
+              <span class="text-xs text-slate-400">{{if isActivePrefix $.Current $item.Route}}▴{{else}}▾{{end}}</span>
             </button>
-            <div id="nav-group-{{$i}}" class="nav-accordion-panel ml-3 hidden space-y-1 border-l border-slate-200 pl-2">
+            <div id="nav-group-{{$i}}" class="nav-accordion-panel ml-3 {{if not (isActivePrefix $.Current $item.Route)}}hidden {{end}}space-y-1 border-l border-slate-200 pl-2">
               <a data-inactive-color="text-slate-600" class="nav-link block rounded-md px-2 py-1.5 text-sm transition {{if eq $.Current $item.Route}}bg-brand-50 text-brand-600 font-semibold{{else}}text-slate-600 hover:bg-slate-100{{end}}" href="{{$item.Route}}">概览</a>
               {{range $j, $child := $item.Children}}
                 {{if $child.Children}}
@@ -60,9 +60,9 @@
                       title="{{$child.Title}}"
                     >
                       <span class="min-w-0 truncate" title="{{$child.Title}}">{{$child.Title}}</span>
-                      <span class="nav-sub-accordion-icon text-xs text-slate-400">▾</span>
+                      <span class="nav-sub-accordion-icon text-xs text-slate-400">{{if isActivePrefix $.Current $child.Route}}▴{{else}}▾{{end}}</span>
                     </a>
-                    <div id="nav-sub-group-{{$i}}-{{$j}}" class="nav-sub-accordion-panel ml-3 hidden space-y-1 border-l border-slate-200 pl-2">
+                    <div id="nav-sub-group-{{$i}}-{{$j}}" class="nav-sub-accordion-panel ml-3 {{if not (isActivePrefix $.Current $child.Route)}}hidden {{end}}space-y-1 border-l border-slate-200 pl-2">
                       {{range $child.Children}}
                         <a data-inactive-color="text-slate-500" class="nav-link block rounded-md px-2 py-1 text-xs text-slate-500 transition hover:bg-slate-100" href="{{.Route}}">{{.Title}}</a>
                       {{end}}

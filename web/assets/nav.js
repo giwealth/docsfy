@@ -282,9 +282,7 @@
       setImmediateActiveWithinLevel(clickedLink);
       if (skipRefreshOnce) {
         skipRefreshOnce = false;
-        return;
       }
-      window.setTimeout(refreshActiveState, 0);
     }
   });
 })();
