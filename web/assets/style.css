@@ -79,6 +79,13 @@
   background: #f1f5f9;
 }
 
+#searchResultTop mark {
+  background: #fef08a;
+  color: #111827;
+  border-radius: 0.2rem;
+  padding: 0 0.1rem;
+}
+
 .kroki-diagram {
   margin: 1rem 0;
   overflow-x: auto;

@@ -5,6 +5,7 @@
   let ready = false;
   let loading = false;
   let lastMatches = [];
+  let currentQuery = "";
   let es = null;
   let lastReloadAt = 0;
 
@@ -28,6 +29,32 @@
     }
   }
 
+  function appendHighlightedText(parent, text, query) {
+    const source = text || "";
+    const q = (query || "").trim();
+    if (!q) {
+      parent.textContent = source;
+      return;
+    }
+    const lower = source.toLowerCase();
+    const needle = q.toLowerCase();
+    let start = 0;
+    while (start < source.length) {
+      const idx = lower.indexOf(needle, start);
+      if (idx === -1) {
+        parent.appendChild(document.createTextNode(source.slice(start)));
+        break;
+      }
+      if (idx > start) {
+        parent.appendChild(document.createTextNode(source.slice(start, idx)));
+      }
+      const mark = document.createElement("mark");
+      mark.textContent = source.slice(idx, idx + needle.length);
+      parent.appendChild(mark);
+      start = idx + needle.length;
+    }
+  }
+
   function render(items) {
     if (!searchResult) return;
     searchResult.innerHTML = "";
@@ -44,11 +71,11 @@
       a.href = it.route;
 
       const title = document.createElement("strong");
-      title.textContent = it.title || "(无标题)";
+      appendHighlightedText(title, it.title || "(无标题)", currentQuery);
 
       const br = document.createElement("br");
       const desc = document.createElement("small");
-      desc.textContent = it.content || "";
+      appendHighlightedText(desc, it.content || "", currentQuery);
 
       a.appendChild(title);
       a.appendChild(br);
@@ -69,10 +96,12 @@
       }
       const q = searchInput.value.trim().toLowerCase();
       if (!q) {
+        currentQuery = "";
         lastMatches = [];
         searchResult.innerHTML = "";
         return;
       }
+      currentQuery = searchInput.value.trim();
       lastMatches = index.filter(
         (it) =>
           (it.title || "").toLowerCase().includes(q) ||
