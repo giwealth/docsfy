@@ -63,3 +63,25 @@ A --> B
 ```
 
 运行时会自动渲染为图形，点击图可在当前页查看大图。
+
+## 内网/离线环境使用
+
+为便于在内网环境使用，前端核心样式脚本已改为本地静态资源（`/assets/vendor/tailwindcss.cdn.js`），不依赖外网 CDN。
+
+### Kroki 配置
+
+Kroki 图表默认使用 `https://kroki.io`。若内网无法访问公网，请使用以下方式之一：
+
+- 指定内网 Kroki 服务：
+
+```bash
+go run ./cmd/main.go serve --docs ./docs --port 8080 --kroki-url http://your-kroki.internal
+```
+
+- 或禁用 Kroki 渲染（保留源码代码块显示）：
+
+```bash
+go run ./cmd/main.go serve --docs ./docs --port 8080 --kroki-disable
+```
+
+同样适用于 `build` 命令。
