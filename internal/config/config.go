@@ -16,6 +16,7 @@ type Config struct {
 	TemplatesDir  string `yaml:"templatesDir"`
 	KrokiURL      string `yaml:"krokiUrl"`
 	KrokiDisabled bool   `yaml:"krokiDisabled"`
+	FrontendMermaid bool `yaml:"frontendMermaid"`
 }
 
 type Options struct {
@@ -38,6 +39,7 @@ func Load(opts Options) (Config, error) {
 		TemplatesDir:  "./web/templates",
 		KrokiURL:      "https://kroki.io",
 		KrokiDisabled: false,
+		FrontendMermaid: true,
 	}
 
 	if opts.ConfigPath != "" {

@@ -40,7 +40,7 @@ func Run(cfg config.Config) error {
 				Anchor: sec.Anchor,
 			})
 		}
-		embedded, err := kroki.Embed(ctx, docs[i].HTML, cfg.KrokiURL, cfg.KrokiDisabled, httpClient)
+		embedded, err := kroki.Embed(ctx, docs[i].HTML, cfg.KrokiURL, cfg.KrokiDisabled, cfg.FrontendMermaid, httpClient)
 		if err != nil {
 			return err
 		}

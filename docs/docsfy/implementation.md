@@ -21,6 +21,18 @@
 5. **构建层（build）**：静态导出到 `dist/`，复制资源，输出搜索索引。
 6. **服务层（server）**：HTTP 路由、静态资源托管、监听变更、热更新通知。
 
+```mermaid
+flowchart LR
+snapshotScheduler[SnapshotScheduler] --> connectorLayer[ConnectorLayer]
+connectorLayer --> normalizer[Normalizer]
+normalizer --> ruleEngine[RiskRuleEngine]
+ruleEngine --> findingStore[FindingStore]
+findingStore --> apiService[RiskAPIService]
+apiService --> dashboardUi[DashboardUI]
+apiService --> reportExporter[ReportExporter]
+apiService --> notificationService[NotificationService]
+```
+
 ## 3. 目录与模块设计
 
 建议目录结构如下：

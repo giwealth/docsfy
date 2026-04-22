@@ -89,10 +89,24 @@
   text-align: center;
 }
 
+.mermaid-diagram {
+  margin: 1rem 0;
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 1rem;
+  text-align: center;
+}
+
 .kroki-diagram img {
   max-width: 100%;
   height: auto;
   vertical-align: middle;
+  cursor: zoom-in;
+}
+
+.mermaid-diagram svg {
   cursor: zoom-in;
 }
 

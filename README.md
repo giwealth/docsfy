@@ -64,6 +64,8 @@ A --> B
 
 运行时会自动渲染为图形，点击图可在当前页查看大图。
 
+默认情况下，`mermaid` 使用前端本地脚本渲染（`/assets/vendor/mermaid.min.js`），不走 Kroki 服务端。
+
 ## 内网/离线环境使用
 
 为便于在内网环境使用，前端核心样式脚本已改为本地静态资源（`/assets/vendor/tailwindcss.cdn.js`），不依赖外网 CDN。

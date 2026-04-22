@@ -76,7 +76,7 @@ func (s *state) rebuildAll() error {
 				Anchor: sec.Anchor,
 			})
 		}
-		embedded, err := kroki.Embed(ctx, docs[i].HTML, s.cfg.KrokiURL, s.cfg.KrokiDisabled, s.httpClient)
+		embedded, err := kroki.Embed(ctx, docs[i].HTML, s.cfg.KrokiURL, s.cfg.KrokiDisabled, s.cfg.FrontendMermaid, s.httpClient)
 		if err != nil {
 			return err
 		}

@@ -1,6 +1,7 @@
 (function () {
-  const imgs = Array.from(document.querySelectorAll(".kroki-diagram img"));
-  if (!imgs.length) return;
+  const krokiImgs = Array.from(document.querySelectorAll(".kroki-diagram img"));
+  const mermaidSvgs = Array.from(document.querySelectorAll(".mermaid-diagram svg"));
+  if (!krokiImgs.length && !mermaidSvgs.length) return;
 
   const overlay = document.createElement("div");
   overlay.className = "kroki-lightbox";
@@ -27,6 +28,15 @@
     document.body.style.overflow = "hidden";
   }
 
+  function svgToDataURL(svgEl) {
+    const cloned = svgEl.cloneNode(true);
+    if (!cloned.getAttribute("xmlns")) {
+      cloned.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    }
+    const xml = new XMLSerializer().serializeToString(cloned);
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(xml);
+  }
+
   function close() {
     overlay.classList.remove("open");
     overlay.setAttribute("aria-hidden", "true");
@@ -34,8 +44,15 @@
     document.body.style.overflow = "";
   }
 
-  imgs.forEach((img) => {
+  krokiImgs.forEach((img) => {
     img.addEventListener("click", () => open(img.src, img.alt));
+  });
+
+  mermaidSvgs.forEach((svg) => {
+    svg.style.cursor = "zoom-in";
+    svg.addEventListener("click", () => {
+      open(svgToDataURL(svg), "mermaid diagram");
+    });
   });
 
   closeBtn.addEventListener("click", close);

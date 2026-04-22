@@ -135,7 +135,8 @@ func truncate(s string, n int) string {
 }
 
 // Embed replaces supported <pre><code class="language-xxx"> blocks in an HTML fragment with Kroki output.
-func Embed(ctx context.Context, htmlFragment, baseURL string, krokiDisabled bool, client *http.Client) (string, error) {
+// When frontendMermaid is true, mermaid fenced blocks are kept for frontend rendering.
+func Embed(ctx context.Context, htmlFragment, baseURL string, krokiDisabled bool, frontendMermaid bool, client *http.Client) (string, error) {
 	if krokiDisabled || strings.TrimSpace(baseURL) == "" {
 		return htmlFragment, nil
 	}
@@ -165,6 +166,9 @@ func Embed(ctx context.Context, htmlFragment, baseURL string, krokiDisabled bool
 		}
 		diagramType, ok := TypeFromCodeClass(cls)
 		if !ok {
+			return
+		}
+		if frontendMermaid && diagramType == "mermaid" {
 			return
 		}
 		src := code.Text()
