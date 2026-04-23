@@ -55,6 +55,25 @@
     }
   }
 
+  function rankMatches(items, query) {
+    const q = (query || "").trim().toLowerCase();
+    if (!q) return items;
+    return items
+      .map((it) => {
+        const title = (it.title || "").toLowerCase();
+        const content = (it.content || "").toLowerCase();
+        const titleHit = title.includes(q);
+        const contentHit = content.includes(q);
+        let score = 0;
+        if (titleHit) score += 100;
+        if (contentHit) score += 10;
+        if (title.startsWith(q)) score += 5;
+        return { ...it, __score: score };
+      })
+      .sort((a, b) => b.__score - a.__score)
+      .map(({ __score, ...it }) => it);
+  }
+
   function render(items) {
     if (!searchResult) return;
     searchResult.innerHTML = "";
@@ -66,7 +85,7 @@
       searchResult.appendChild(empty);
       return;
     }
-    items.slice(0, 8).forEach((it) => {
+    items.forEach((it) => {
       const a = document.createElement("a");
       a.href = it.route;
 
@@ -107,6 +126,7 @@
           (it.title || "").toLowerCase().includes(q) ||
           (it.content || "").toLowerCase().includes(q)
       );
+      lastMatches = rankMatches(lastMatches, currentQuery);
       render(lastMatches);
     });
 
