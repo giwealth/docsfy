@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -20,6 +21,7 @@ import (
 	"github.com/giwealth/docsfy/internal/render"
 	"github.com/giwealth/docsfy/internal/search"
 	"github.com/giwealth/docsfy/internal/site"
+	webembed "github.com/giwealth/docsfy/web"
 )
 
 type state struct {
@@ -45,7 +47,7 @@ func Run(cfg config.Config) error {
 	go s.watch()
 
 	mux := http.NewServeMux()
-	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(cfg.AssetsDir))))
+	mux.Handle("/assets/", http.StripPrefix("/assets/", assetsHandler(cfg.AssetsDir)))
 	mux.HandleFunc("/search-index.json", s.handleSearchIndex)
 	mux.HandleFunc("/__livereload", s.handleLiveReload)
 	mux.HandleFunc("/", s.handlePage)
@@ -53,6 +55,18 @@ func Run(cfg config.Config) error {
 	addr := fmt.Sprintf(":%d", cfg.Port)
 	log.Printf("serve on http://localhost%s", addr)
 	return http.ListenAndServe(addr, mux)
+}
+
+func assetsHandler(assetsDir string) http.Handler {
+	if webembed.HasDir(assetsDir) {
+		return http.FileServer(http.Dir(assetsDir))
+	}
+	afs, err := fs.Sub(webembed.EmbeddedFiles(), "assets")
+	if err != nil {
+		log.Printf("embedded assets unavailable, fallback failed: %v", err)
+		return http.NotFoundHandler()
+	}
+	return http.FileServer(http.FS(afs))
 }
 
 func (s *state) rebuildAll() error {

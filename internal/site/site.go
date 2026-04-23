@@ -2,11 +2,14 @@ package site
 
 import (
 	"html/template"
+	"io/fs"
+	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 
 	"github.com/giwealth/docsfy/internal/content"
+	webembed "github.com/giwealth/docsfy/web"
 )
 
 type NavItem struct {
@@ -27,7 +30,14 @@ func ParseTemplates(templatesDir string) (*template.Template, error) {
 	funcMap := template.FuncMap{
 		"isActivePrefix": isActivePrefix,
 	}
-	return template.New("").Funcs(funcMap).ParseGlob(filepath.Join(templatesDir, "*.tmpl"))
+	if info, err := os.Stat(templatesDir); err == nil && info.IsDir() {
+		return template.New("").Funcs(funcMap).ParseGlob(filepath.Join(templatesDir, "*.tmpl"))
+	}
+	tfs, err := fs.Sub(webembed.EmbeddedFiles(), "templates")
+	if err != nil {
+		return nil, err
+	}
+	return template.New("").Funcs(funcMap).ParseFS(tfs, "*.tmpl")
 }
 
 func isActivePrefix(current, route string) bool {

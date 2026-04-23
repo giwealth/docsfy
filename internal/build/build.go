@@ -15,6 +15,7 @@ import (
 	"github.com/giwealth/docsfy/internal/render"
 	"github.com/giwealth/docsfy/internal/search"
 	"github.com/giwealth/docsfy/internal/site"
+	webembed "github.com/giwealth/docsfy/web"
 )
 
 func Run(cfg config.Config) error {
@@ -82,8 +83,15 @@ func Run(cfg config.Config) error {
 		}
 	}
 
-	if err := copyDir(cfg.AssetsDir, filepath.Join(cfg.OutDir, "assets")); err != nil {
-		return err
+	assetsOut := filepath.Join(cfg.OutDir, "assets")
+	if webembed.HasDir(cfg.AssetsDir) {
+		if err := copyDir(cfg.AssetsDir, assetsOut); err != nil {
+			return err
+		}
+	} else {
+		if err := webembed.CopyEmbeddedAssets(assetsOut); err != nil {
+			return err
+		}
 	}
 
 	index := search.BuildIndex(docs)

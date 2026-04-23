@@ -16,6 +16,14 @@ go run ./cmd/main.go serve --docs ./docs --port 8080
 go run ./cmd/main.go build --docs ./docs --out ./dist
 ```
 
+### 构建二进制（内置资源）
+
+```bash
+./scripts/build-binary.sh
+```
+
+默认输出到 `bin/docsfy`。该二进制已内置 `web/templates` 与 `web/assets`，在目标环境没有这些目录时也可直接运行。
+
 ## Markdown 布局规范
 
 `docsfy` 会按目录结构自动生成左侧菜单，建议按下面方式组织文档：
