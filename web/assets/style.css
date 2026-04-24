@@ -63,6 +63,30 @@
   padding: 0;
 }
 
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  border: 1px solid #cbd5e1;
+}
+
+.markdown-body thead {
+  background: #f8fafc;
+}
+
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid #cbd5e1;
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.markdown-body th {
+  font-weight: 600;
+  color: #0f172a;
+}
+
 #searchResultTop:empty {
   display: none;
 }
