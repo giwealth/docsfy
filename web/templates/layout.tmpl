@@ -44,10 +44,13 @@
               aria-expanded="{{if isActivePrefix $.Current $item.Route}}true{{else}}false{{end}}"
             >
               <span>{{$item.Title}}</span>
-              <span class="text-xs text-slate-400">{{if isActivePrefix $.Current $item.Route}}▴{{else}}▾{{end}}</span>
+              <span class="nav-accordion-icon text-slate-400 {{if isActivePrefix $.Current $item.Route}}rotate-90{{end}}">
+                <svg class="h-3 w-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M4 2L8 6L4 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </button>
             <div id="nav-group-{{$i}}" class="nav-accordion-panel ml-3 {{if not (isActivePrefix $.Current $item.Route)}}hidden {{end}}space-y-1 border-l border-slate-200 pl-2">
-              <a data-inactive-color="text-slate-600" class="nav-link block rounded-md px-2 py-1.5 text-sm transition {{if eq $.Current $item.Route}}bg-brand-50 text-brand-600 font-semibold{{else}}text-slate-600 hover:bg-slate-100{{end}}" href="{{$item.Route}}">概览</a>
               {{range $j, $child := $item.Children}}
                 {{if $child.Children}}
                   <div class="space-y-1">
@@ -60,7 +63,11 @@
                       title="{{$child.Title}}"
                     >
                       <span class="min-w-0 truncate" title="{{$child.Title}}">{{$child.Title}}</span>
-                      <span class="nav-sub-accordion-icon text-xs text-slate-400">{{if isActivePrefix $.Current $child.Route}}▴{{else}}▾{{end}}</span>
+                      <span class="nav-sub-accordion-icon text-slate-400 {{if isActivePrefix $.Current $child.Route}}rotate-90{{end}}">
+                        <svg class="h-3 w-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path d="M4 2L8 6L4 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </span>
                     </a>
                     <div id="nav-sub-group-{{$i}}-{{$j}}" class="nav-sub-accordion-panel ml-3 {{if not (isActivePrefix $.Current $child.Route)}}hidden {{end}}space-y-1 border-l border-slate-200 pl-2">
                       {{range $child.Children}}

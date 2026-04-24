@@ -55,9 +55,9 @@
   function collapseAll() {
     toggles.forEach((btn) => {
       btn.setAttribute("aria-expanded", "false");
-      const icon = btn.querySelector("span:last-child");
+    const icon = btn.querySelector(".nav-accordion-icon");
       if (icon) {
-        icon.textContent = "▾";
+      icon.classList.remove("rotate-90");
       }
     });
     panels.forEach((panel) => {
@@ -71,7 +71,7 @@
       link.setAttribute("aria-expanded", "false");
       const icon = link.querySelector(".nav-sub-accordion-icon");
       if (icon) {
-        icon.textContent = "▾";
+      icon.classList.remove("rotate-90");
       }
       const targetId = link.getAttribute("data-sub-accordion-link");
       if (!targetId) return;
@@ -100,9 +100,9 @@
 
       if (!isExpanded) {
         btn.setAttribute("aria-expanded", "true");
-        const icon = btn.querySelector("span:last-child");
+        const icon = btn.querySelector(".nav-accordion-icon");
         if (icon) {
-          icon.textContent = "▴";
+          icon.classList.add("rotate-90");
         }
         panel.classList.remove("hidden");
         scrollNavRowIntoView(btn);
@@ -121,7 +121,7 @@
       if (!parentId) return;
       link.setAttribute("aria-expanded", "true");
       if (icon) {
-        icon.textContent = "▴";
+        icon.classList.add("rotate-90");
       }
       panel.classList.remove("hidden");
       setImmediateActiveWithinLevel(link);
@@ -231,7 +231,7 @@
     btn.setAttribute("aria-expanded", "true");
     const icon = btn.querySelector("span:last-child");
     if (icon) {
-      icon.textContent = "▴";
+      icon.classList.add("rotate-90");
     }
     btn.classList.add("bg-brand-50", "text-brand-600", "font-semibold");
     panel.classList.remove("hidden");
@@ -245,7 +245,7 @@
         subLink.setAttribute("aria-expanded", "true");
         const icon = subLink.querySelector(".nav-sub-accordion-icon");
         if (icon) {
-          icon.textContent = "▴";
+          icon.classList.add("rotate-90");
         }
         subPanel.classList.remove("hidden");
         scrollNavRowIntoView(subLink, { pinToAsideTop: true });
